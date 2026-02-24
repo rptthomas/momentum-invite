@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Momentum — Invitation</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #f7f7f7;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 24px;
+      border: 1px solid #e8e8e8;
+      padding: 32px 24px;
+      max-width: 380px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .logo {
+      width: 64px;
+      height: 64px;
+      background: #0a0a0a;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+    }
+
+    .logo span {
+      color: #fff;
+      font-size: 28px;
+      font-weight: 700;
+    }
+
+    .app-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: #999;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+
+    .event-card {
+      background: #0a0a0a;
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 24px;
+      text-align: left;
+    }
+
+    .event-label {
+      font-size: 10px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.4);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .event-icon {
+      font-size: 32px;
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .event-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: -0.5px;
+      margin-bottom: 12px;
+    }
+
+    .event-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .event-meta-row {
+      font-size: 13px;
+      color: rgba(255,255,255,0.5);
+    }
+
+    .invited-by {
+      font-size: 14px;
+      color: #3d3d3d;
+      margin-bottom: 28px;
+      line-height: 1.5;
+    }
+
+    .invited-by strong {
+      color: #0a0a0a;
+    }
+
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 16px;
+      border-radius: 14px;
+      font-size: 15px;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      margin-bottom: 10px;
+    }
+
+    .btn-primary {
+      background: #0a0a0a;
+      color: #fff;
+    }
+
+    .btn-secondary {
+      background: #f7f7f7;
+      color: #0a0a0a;
+      border: 1px solid #e8e8e8;
+      font-size: 14px;
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 16px 0;
+    }
+
+    .divider-line {
+      flex: 1;
+      height: 1px;
+      background: #e8e8e8;
+    }
+
+    .divider-text {
+      font-size: 12px;
+      color: #999;
+    }
+
+    .stores {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .store-btn {
+      flex: 1;
+      padding: 12px;
+      border-radius: 12px;
+      background: #0a0a0a;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+      display: block;
+      text-align: center;
+    }
+
+    .footer {
+      font-size: 11px;
+      color: #ccc;
+      margin-top: 20px;
+    }
+
+    /* Loading state */
+    .loading { display: block; }
+    .content { display: none; }
+    .spinner {
+      width: 32px;
+      height: 32px;
+      border: 3px solid #e8e8e8;
+      border-top-color: #0a0a0a;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 40px auto;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="logo"><span>M</span></div>
+    <div class="app-name">Momentum</div>
+
+    <!-- Loading -->
+    <div class="loading" id="loading">
+      <div class="spinner"></div>
+      <p style="color:#999; font-size:14px;">Chargement de l'invitation...</p>
+    </div>
+
+    <!-- Contenu -->
+    <div class="content" id="content">
+      <div class="event-card">
+        <div class="event-label">Invitation à un événement</div>
+        <span class="event-icon" id="eventIcon">📅</span>
+        <div class="event-title" id="eventTitle">Chargement...</div>
+        <div class="event-meta">
+          <div class="event-meta-row" id="eventDate"></div>
+          <div class="event-meta-row" id="eventLocation"></div>
+        </div>
+      </div>
+
+      <p class="invited-by">
+        <strong id="creatorName">Quelqu'un</strong> t'invite à rejoindre cet événement sur Momentum.
+      </p>
+
+      <!-- Si app installée -->
+      <a class="btn btn-primary" id="openAppBtn" href="#">
+        📱 Ouvrir dans Momentum
+      </a>
+
+      <div class="divider">
+        <div class="divider-line"></div>
+        <div class="divider-text">pas encore l'app ?</div>
+        <div class="divider-line"></div>
+      </div>
+
+      <!-- Télécharger l'app -->
+      <div class="stores">
+        <a class="store-btn" id="iosBtn" href="#">🍎 App Store</a>
+        <a class="store-btn" id="androidBtn" href="#">🤖 Play Store</a>
+      </div>
+
+      <p style="font-size:12px; color:#999; margin-top:8px;">
+        Après installation, reviens sur ce lien pour rejoindre l'événement.
+      </p>
+    </div>
+
+    <div class="footer">Momentum · Reprends le contrôle de ta vie</div>
+  </div>
+
+  <script>
+    // ── Récupère le token depuis l'URL ──
+    // Ex: momentum-invite.vercel.app/?token=abc123
+    const params = new URLSearchParams(window.location.search);
+    const token = params.get('token');
+
+    const SUPABASE_URL = 'https://bdwnyeujxomnhqudmnes.supabase.co';
+    const SUPABASE_ANON_KEY = 'sb_publishable_ogl2pdFI2gCHJ5x06P2yjw_zoktFkf-';
+
+    async function loadEvent() {
+      if (!token) {
+        document.getElementById('eventTitle').textContent = 'Lien invalide';
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('content').style.display = 'block';
+        return;
+      }
+
+      try {
+        // Charger l'événement partagé depuis Supabase
+        const res = await fetch(
+          `${SUPABASE_URL}/rest/v1/shared_events?invite_token=eq.${token}&select=*,events(*),profiles(username)`,
+          {
+            headers: {
+              'apikey': SUPABASE_ANON_KEY,
+              'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+            }
+          }
+        );
+        const data = await res.json();
+
+        if (!data || data.length === 0) {
+          document.getElementById('eventTitle').textContent = 'Invitation introuvable';
+          document.getElementById('loading').style.display = 'none';
+          document.getElementById('content').style.display = 'block';
+          return;
+        }
+
+        const sharedEvent = data[0];
+        const event = sharedEvent.events;
+        const creator = sharedEvent.profiles;
+
+        // Remplir la page
+        document.getElementById('eventIcon').textContent = event.icon || '📅';
+        document.getElementById('eventTitle').textContent = event.title;
+        document.getElementById('creatorName').textContent = creator?.username || 'Quelqu\'un';
+
+        if (event.start_date) {
+          const d = new Date(event.start_date);
+          document.getElementById('eventDate').textContent = '📅 ' + d.toLocaleDateString('fr-FR', {
+            weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
+          });
+        }
+
+        if (event.location) {
+          document.getElementById('eventLocation').textContent = '📍 ' + event.location;
+        }
+
+        // Deep link vers l'app
+        const deepLink = `momentum://event/${token}`;
+        document.getElementById('openAppBtn').href = deepLink;
+
+        // Store links (à remplacer par tes vrais liens quand l'app sera publiée)
+        document.getElementById('iosBtn').href = 'https://apps.apple.com/';
+        document.getElementById('androidBtn').href = 'https://play.google.com/';
+
+        // Tenter d'ouvrir l'app automatiquement
+        setTimeout(() => {
+          window.location.href = deepLink;
+        }, 800);
+
+      } catch (err) {
+        document.getElementById('eventTitle').textContent = 'Erreur de chargement';
+      }
+
+      document.getElementById('loading').style.display = 'none';
+      document.getElementById('content').style.display = 'block';
+    }
+
+    loadEvent();
+  </script>
+</body>
+</html>
