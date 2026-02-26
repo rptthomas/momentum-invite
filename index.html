@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Momentum — Invitation</title>
+  <title>Novar — Invitation</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -124,13 +124,6 @@
       color: #fff;
     }
 
-    .btn-secondary {
-      background: #f7f7f7;
-      color: #0a0a0a;
-      border: 1px solid #e8e8e8;
-      font-size: 14px;
-    }
-
     .divider {
       display: flex;
       align-items: center;
@@ -174,7 +167,6 @@
       margin-top: 20px;
     }
 
-    /* Loading state */
     .loading { display: block; }
     .content { display: none; }
     .spinner {
@@ -191,8 +183,8 @@
 </head>
 <body>
   <div class="card">
-    <div class="logo"><span>M</span></div>
-    <div class="app-name">Momentum</div>
+    <div class="logo"><span>N</span></div>
+    <div class="app-name">Novar</div>
 
     <!-- Loading -->
     <div class="loading" id="loading">
@@ -213,12 +205,12 @@
       </div>
 
       <p class="invited-by">
-        <strong id="creatorName">Quelqu'un</strong> t'invite à rejoindre cet événement sur Momentum.
+        <strong id="creatorName">Quelqu'un</strong> t'invite à rejoindre cet événement sur Novar.
       </p>
 
       <!-- Si app installée -->
       <a class="btn btn-primary" id="openAppBtn" href="#">
-        📱 Ouvrir dans Momentum
+        📱 Ouvrir dans Novar
       </a>
 
       <div class="divider">
@@ -238,15 +230,14 @@
       </p>
     </div>
 
-    <div class="footer">Momentum · Reprends le contrôle de ta vie</div>
+    <div class="footer">Novar · Reprends le contrôle de ta vie</div>
   </div>
 
   <script>
-    // ── Récupère le token depuis l'URL ──
-    // Ex: momentum-invite.vercel.app/?token=abc123
     const params = new URLSearchParams(window.location.search);
     const token = params.get('token');
 
+    // ⚠️ Remplace par tes vraies clés Supabase
     const SUPABASE_URL = 'https://bdwnyeujxomnhqudmnes.supabase.co';
     const SUPABASE_ANON_KEY = 'sb_publishable_ogl2pdFI2gCHJ5x06P2yjw_zoktFkf-';
 
@@ -259,7 +250,6 @@
       }
 
       try {
-        // Charger l'événement partagé depuis Supabase
         const res = await fetch(
           `${SUPABASE_URL}/rest/v1/shared_events?invite_token=eq.${token}&select=*,events(*),profiles(username)`,
           {
@@ -282,7 +272,6 @@
         const event = sharedEvent.events;
         const creator = sharedEvent.profiles;
 
-        // Remplir la page
         document.getElementById('eventIcon').textContent = event.icon || '📅';
         document.getElementById('eventTitle').textContent = event.title;
         document.getElementById('creatorName').textContent = creator?.username || 'Quelqu\'un';
@@ -298,11 +287,10 @@
           document.getElementById('eventLocation').textContent = '📍 ' + event.location;
         }
 
-        // Deep link vers l'app
-        const deepLink = `momentum://event/${token}`;
+        // Deep link Novar
+        const deepLink = `novar://event/${token}`;
         document.getElementById('openAppBtn').href = deepLink;
 
-        // Store links (à remplacer par tes vrais liens quand l'app sera publiée)
         document.getElementById('iosBtn').href = 'https://apps.apple.com/';
         document.getElementById('androidBtn').href = 'https://play.google.com/';
 
